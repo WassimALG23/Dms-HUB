@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robux Tax Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .language-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 120px;
+            height: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .language-btn:hover {
+            background-color: #555;
+        }
+
+        .calculator {
+            background-color: #2e2e2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #777;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:active {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button class="language-btn" id="language-toggle">🌍 Change Language</button>
+    <div class="calculator">
+        <h1 id="title">حاسبة ضريبة روبكس</h1>
+        <input type="number" id="robux-input" placeholder="ضع كمية الروبكس">
+        <button id="before-tax">قبل ضريبة روبكس</button>
+        <button id="after-tax">بعد ضريبة روبكس</button>
+        <div class="result" id="result">سوف تحصل على ... روبكس</div>
+    </div>
+
+    <script>
+        const robuxInput = document.getElementById('robux-input');
+        const result = document.getElementById('result');
+        const beforeTaxBtn = document.getElementById('before-tax');
+        const afterTaxBtn = document.getElementById('after-tax');
+        const languageToggle = document.getElementById('language-toggle');
+        const title = document.getElementById('title');
+
+        let language = 'arab'; // Default language
+
+        // Update text based on language
+        const updateLanguage = () => {
+            if (language === 'arab') {
+                title.textContent = 'حاسبة ضريبة روبكس';
+                beforeTaxBtn.textContent = 'قبل ضريبة روبكس';
+                afterTaxBtn.textContent = 'بعد ضريبة روبكس';
+                robuxInput.placeholder = 'ضع كمية الروبكس';
+                result.textContent = 'سوف تحصل على ... روبكس';
+                languageToggle.textContent = '🌍 تغيير اللغة';
+            } else {
+                title.textContent = 'Robux Tax Calculator';
+                beforeTaxBtn.textContent = 'Before Robux Tax';
+                afterTaxBtn.textContent = 'After Robux Tax';
+                robuxInput.placeholder = 'Enter your Robux amount';
+                result.textContent = 'You will get ... Robux';
+                languageToggle.textContent = '🌍 Change Language';
+            }
+        };
+
+        // Language toggle functionality
+        languageToggle.addEventListener('click', () => {
+            language = language === 'arab' ? 'eng' : 'arab';
+            updateLanguage();
+        });
+
+        beforeTaxBtn.addEventListener('click', () => {
+            const robux = parseFloat(robuxInput.value);
+            if (isNaN(robux) || robux <= 0) {
+                result.textContent = language === 'arab'
+                    ? 'يرجى إدخال رقم صحيح'
+                    : 'Please enter a valid number';
+                return;
+            }
+            const finalAmount = Math.round(robux * 0.7);
+            result.textContent = language === 'arab'
+                ? `سوف تحصل على ${finalAmount} روبكس`
+                : `You will get ${finalAmount} Robux`;
+        });
+
+        afterTaxBtn.addEventListener('click', () => {
+            const robux = parseFloat(robuxInput.value);
+            if (isNaN(robux) || robux <= 0) {
+                result.textContent = language === 'arab'
+                    ? 'يرجى إدخال رقم صحيح'
+                    : 'Please enter a valid number';
+                return;
+            }
+            const finalAmount = Math.round(robux / 0.7);
+            result.textContent = language === 'arab'
+                ? `يجب عليك وضع ${finalAmount} روبكس`
+                : `You need to put ${finalAmount} Robux`;
+        });
+
+        updateLanguage(); // Set initial language
+    </script>
+</body>
+</html>
