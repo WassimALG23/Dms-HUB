@@ -17,25 +17,26 @@
             height: 100vh;
         }
 
-        .language-btn {
+        .language-btn, .currency-btn {
             position: absolute;
             top: 20px;
             right: 20px;
             background-color: #444;
             color: #fff;
             border: none;
-            border-radius: 50%;
-            width: 120px;
+            border-radius: 5px;
+            width: 150px;
             height: 40px;
             font-size: 16px;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             transition: 0.3s;
         }
 
-        .language-btn:hover {
+        .currency-btn {
+            right: 200px;
+        }
+
+        .language-btn:hover, .currency-btn:hover {
             background-color: #555;
         }
 
@@ -76,7 +77,7 @@
             transition: 0.3s;
         }
 
-        button:active {
+        button:hover {
             background-color: #4caf50;
             color: #fff;
         }
@@ -88,6 +89,7 @@
     </style>
 </head>
 <body>
+    <button class="currency-btn" id="currency-calculator">💵 Currency Calculator</button>
     <button class="language-btn" id="language-toggle">🌍 Change Language</button>
     <div class="calculator">
         <h1 id="title">حاسبة ضريبة روبكس</h1>
@@ -103,6 +105,7 @@
         const beforeTaxBtn = document.getElementById('before-tax');
         const afterTaxBtn = document.getElementById('after-tax');
         const languageToggle = document.getElementById('language-toggle');
+        const currencyCalculatorBtn = document.getElementById('currency-calculator');
         const title = document.getElementById('title');
 
         let language = 'arab'; // Default language
@@ -116,6 +119,7 @@
                 robuxInput.placeholder = 'ضع كمية الروبكس';
                 result.textContent = 'سوف تحصل على ... روبكس';
                 languageToggle.textContent = '🌍 تغيير اللغة';
+                currencyCalculatorBtn.textContent = '💵 حساب العملة';
             } else {
                 title.textContent = 'Robux Tax Calculator';
                 beforeTaxBtn.textContent = 'Before Robux Tax';
@@ -123,6 +127,7 @@
                 robuxInput.placeholder = 'Enter your Robux amount';
                 result.textContent = 'You will get ... Robux';
                 languageToggle.textContent = '🌍 Change Language';
+                currencyCalculatorBtn.textContent = '💵 Currency Calculator';
             }
         };
 
@@ -130,6 +135,11 @@
         languageToggle.addEventListener('click', () => {
             language = language === 'arab' ? 'eng' : 'arab';
             updateLanguage();
+        });
+
+        // Navigate to currency calculator
+        currencyCalculatorBtn.addEventListener('click', () => {
+            window.location.href = 'currency_calculator.html'; // This will redirect to another page
         });
 
         beforeTaxBtn.addEventListener('click', () => {
