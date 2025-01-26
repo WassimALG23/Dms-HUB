@@ -108,7 +108,7 @@
         const currencyCalculatorBtn = document.getElementById('currency-calculator');
         const title = document.getElementById('title');
 
-        let language = 'arab'; // Default language
+        let language = 'en'; // Default language
 
         // Update text based on language
         const updateLanguage = () => {
@@ -164,8 +164,7 @@
                     : 'Please enter a valid number';
                 return;
             }
-            const finalAmount = Math.round(robux / 0.7);
-            result.textContent = language === 'arab'
+            const finalAmount = Math.round(robux / 0.7);            result.textContent = language === 'arab'
                 ? `يجب عليك وضع ${finalAmount} روبكس`
                 : `You need to put ${finalAmount} Robux`;
         });
