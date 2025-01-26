@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            background-color: #2e2e2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background-color: #777;
+            color: #000;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .language-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            width: 150px;
+            height: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .language-btn:hover {
+            background-color: #555;
+        }
+
+        .back-btn {
+            margin-top: 15px;
+            background-color: #444;
+        }
+
+        .back-btn:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <button class="language-btn" id="language-toggle">🌍 Change Language</button>
+    <div class="calculator">
+        <h1 id="title">Currency Calculator</h1>
+        <select id="currency">
+            <option value="usd">USD ($)</option>
+            <option value="dinar">Dinar (DA)</option>
+        </select>
+        <input type="number" id="robux-input" placeholder="Enter Robux amount">
+        <button id="robux-to-currency">Robux to Currency</button>
+        <input type="number" id="currency-input" placeholder="Enter Currency amount">
+        <button id="currency-to-robux">Currency to Robux</button>
+        <div class="result" id="result">Result will appear here</div>
+        <button class="back-btn" id="back">🔙 Back to Calculator</button>
+    </div>
+
+    <script>
+        const robuxToCurrencyBtn = document.getElementById('robux-to-currency');
+        const currencyToRobuxBtn = document.getElementById('currency-to-robux');
+        const robuxInput = document.getElementById('robux-input');
+        const currencyInput = document.getElementById('currency-input');
+        const result = document.getElementById('result');
+        const currencySelect = document.getElementById('currency');
+        const backBtn = document.getElementById('back');
+        const languageToggle = document.getElementById('language-toggle');
+        const title = document.getElementById('title');
+
+        const conversionRates = {
+            usd: { rate: 0.0125, robuxPerDollar: 80 }, // 1 Robux = 0.0125 USD
+            dinar: { rate: 3.125, robuxPerDinar: 80 / 250 } // 1 Robux = 3.125 DA
+        };
+
+        let language = 'eng'; // Default language
+
+        const updateLanguage = () => {
+            if (language === 'arab') {
+                title.textContent = 'حاسبة العملة';
+                robuxInput.placeholder = 'أدخل كمية روبكس';
+                currencyInput.placeholder = 'أدخل المبلغ بالدينار أو بالدولار';
+                robuxToCurrencyBtn.textContent = 'من روبكس إلى عملة';
+                currencyToRobuxBtn.textContent = 'من عملة إلى روبكس';
+                result.textContent = 'ستظهر النتيجة هنا';
+                languageToggle.textContent = '🌍 تغيير اللغة';
+                backBtn.textContent = '🔙 العودة إلى حاسبة الضريبة';
+            } else {
+                title.textContent = 'Currency Calculator';
+                robuxInput.placeholder = 'Enter Robux amount';
+                currencyInput.placeholder = 'Enter Currency amount';
+                robuxToCurrencyBtn.textContent = 'Robux to Currency';
+                currencyToRobuxBtn.textContent = 'Currency to Robux';
+                result.textContent = 'Result will appear here';
+                languageToggle.textContent = '🌍 Change Language';
+                backBtn.textContent = '🔙 Back to Calculator';
+            }
+        };
+
+        languageToggle.addEventListener('click', () => {
+            language = language === 'eng' ? 'arab' : 'eng';
+            updateLanguage();
+        });
+
+        robuxToCurrencyBtn.addEventListener('click', () => {
+            const robux = parseFloat(robuxInput.value);
+            const currency = currencySelect.value;
+
+            if (isNaN(robux) || robux <= 0) {
+                result.textContent = language === 'arab'
+                    ? 'يرجى إدخال كمية روبكس صحيحة'
+                    : 'Please enter a valid Robux amount';
+                return;
+            }
+
+            const rate = conversionRates[currency].rate;
+            const value = (robux * rate).toFixed(2);
+            result.textContent = language === 'arab'
+                ? `هذه القيمة تساوي ${value} ${currency === 'usd' ? 'دولار أمريكي' : 'دينار جزائري'}`
+                : `This is worth ${value} ${currency.toUpperCase()}`;
+        });
+
+        currencyToRobuxBtn.addEventListener('click', () => {
+            const currencyAmount = parseFloat(currencyInput.value);
+            const currency = currencySelect.value;
+
+            if (isNaN(currencyAmount) || currencyAmount <= 0) {
+                result.textContent = language === 'arab'
+                    ? 'يرجى إدخال مبلغ صحيح'
+                    : 'Please enter a valid currency amount';
+                return;
+            }
+
+            const robuxPerCurrency = conversionRates[currency].robuxPerDollar || conversionRates[currency].robuxPerDinar;
+            const robux = Math.floor(currencyAmount * robuxPerCurrency);
+            result.textContent = language === 'arab'
+                ? `هذه القيمة تساوي ${robux} روبكس`
+                : `This is worth ${robux} Robux`;
+        });
+
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'index.html'; // Go back to the main calculator
+        });
+
+        updateLanguage(); // Set initial language
+    </script>
+</body>
+</html>
